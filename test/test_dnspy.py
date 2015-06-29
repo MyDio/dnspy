@@ -27,3 +27,8 @@ class DnspyTestCase(unittest.TestCase):
 		expected = ['co.uk', 'google', 'www']
 		result = self.dno.domlabels('1.2.3.www.google.co.uk')
 		self.assertEqual(expected, result)
+
+	def test_subdom_count (self):
+		expected = ('google.co.uk', 4)
+		result = self.dno.subdom_count('1.2.3.www.google.co.uk')
+		self.assertEqual(expected, result)

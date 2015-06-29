@@ -46,7 +46,12 @@ class Dnspy:
 	etlds = dict()
 
 	def __init__ (self, etld_url=DEFAULT_URL):
-		"""Read the ETLD list provided by the user."""
+		""" Read the ETLD list provided by the user.
+		    Args:
+		    	@etld_url:	User provided URL containing effective 
+					top-level domains [string]
+		    Returns:
+		"""
 
 		with closing(urllib2.urlopen(etld_url)) as inf:
 			for line in inf:
@@ -77,9 +82,12 @@ class Dnspy:
 		return
 
 	def etld (self, domain):
-		"""Given a domain, get the effective top level domains.
-		If domain is invalid, raise InvalidDomainError
-
+		""" Given a domain, get the effective top level domains.
+		    If domain is invalid, raise InvalidDomainError.
+		    Args:
+		    	@domain:	Domain name [string]
+		    Returns:
+		    	Effective top-level domain [string]
 		"""
 		dlabels = domain.strip().split('.')
 
@@ -101,11 +109,15 @@ class Dnspy:
 		return etld
 
 	def subdoms (self, domain, n=3):
-		"""Given a qname, return a list of all subdomains.
-		E.g. for 'www.google.com'
+		""" Given a qname, return a list of all subdomains.
+		    E.g. for 'www.google.com'
 
-		returns ['com', 'google.com', 'www.google.com']
+		    returns ['com', 'google.com', 'www.google.com']
 
+		    Args:
+		    	@domain:	Domain name [string]
+		    Returns:
+		    	[list] of sub-domains
 		"""
 
 		if n == 0: return []
@@ -127,10 +139,13 @@ class Dnspy:
 		return subdlst
 
 	def domlabels (self, domain, n=3):
-		"""Returns a list of domain labels at different levels.
-		E.g. for 'www.google.com'
-		
-		returns ['com', 'google', 'www']
+		""" Returns a list of domain labels at different levels.
+		    E.G. 'www.google.com'
+		    RETURNS ['com', 'google', 'www']
+		    Args:
+		    	@domain:	Domain name [string]
+		    Returns:
+		    	[list] of domain labels
 		"""
 		if n == 0: return []
 		etld = self.etld(domain)
@@ -148,6 +163,19 @@ class Dnspy:
 
 		return lblst
 
+	def subdom_count (self, domain):
+		""" Return a tuple with the second-level domain and the count 
+		    of all sub-domains not including the second-level domain.
+		    E.G. 'a.b.c.d.google.com'
+		    RETURNS (google.com, 4)
+		    Args:
+		    	@domain:	Domain name [string]
+		    Returns:
+		    	[tuple]
+		"""
+		subdoml = self.subdoms(domain, n=-1)
+		return (subdoml[1], len(subdoml[2:]))
+
 
 def main (argv=sys.argv):
 
@@ -164,6 +192,7 @@ def main (argv=sys.argv):
 
 	print str(dpy.subdoms(args.qname))
 	print str(dpy.domlabels(args.qname))
+	print str(dpy.subdom_count(args.qname))
 
 
 if __name__ == "__main__":

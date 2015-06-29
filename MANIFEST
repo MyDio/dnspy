@@ -4,5 +4,4 @@ README.md
 setup.py
 dnspy/__init__.py
 dnspy/dnspy.py
-dnspy/data/effective_tld_names.dat
 test/test_dnspy.py
