@@ -100,7 +100,7 @@ $ rm -rf /usr/local/lib/python2.7/dist-packages/dnspy
 
 License
 -------
-Copyright &copy; 2013 Sandeep Yadav (Damballa)
+Copyright &copy; 2015 Sandeep Yadav (Damballa)
 
 Distributed under the BSD license
 
