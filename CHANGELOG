@@ -6,3 +6,7 @@
 --------
 - Added a new method for getting the E2LD and count of sub-domains
 - Improved documentation
+
+20170529
+--------
+- Making the library PEP-8 compatible
