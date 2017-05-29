@@ -9,4 +9,6 @@
 
 20170529
 --------
+- Bug fixes
+- Added support for Internationalized Domain Names
 - Making the library PEP-8 compatible
