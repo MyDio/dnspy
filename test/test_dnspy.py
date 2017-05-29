@@ -37,3 +37,8 @@ class DnspyTestCase(unittest.TestCase):
         expected = ['xn--h2brj9c', 'google.xn--h2brj9c']
         result = self.dno.subdoms('google.xn--h2brj9c')
         self.assertEqual(expected, result)
+
+    def test_etld_only(self):
+        expected = ['co.uk']
+        result = self.dno.subdoms('co.uk')
+        self.assertEqual(expected, result)

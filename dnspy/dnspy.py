@@ -149,6 +149,8 @@ class Dnspy:
         nsubd = len(dlabels) if n < 0 else min(n - 1, len(dlabels))
         subd = etld
         for i in range(nsubd):
+            if dlabels[i] == '':
+                continue
             subd = dlabels[i] + '.' + subd
             subdlst.append(subd)
 
@@ -182,6 +184,8 @@ class Dnspy:
         # Number of domain labels to return; if negative, return all
         ndl = len(dlabels) if n < 0 else min(n - 1, len(dlabels))
         for i in range(ndl):
+            if dlabels[i] == '':
+                continue
             lblst.append(dlabels[i])
 
         return lblst
