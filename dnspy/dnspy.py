@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-# Copyright (c) 2015, Sandeep Yadav (Damballa)
+# Copyright (c) 2017, Sandeep Yadav
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -62,24 +62,25 @@ class Dnspy:
                 if ((line[:2] == '//') or (line[0] == '\n')):
                     continue
 
+                line = unicode(line.strip(), 'utf-8')
                 line = line.strip()
 
                 if line[0] == '*':
                     # Any hostname matches wildcard
-                    etld_ = line[2:]
+                    etld_ = line[2:].encode('idna')
                     if etld_ not in self.etlds:
                         self.etlds[etld_] = set()
                     self.etlds[line[2:]].add('*')
                 elif line[0] == '!':
                     # Exceptions to the wildcard rule
                     lbls = line.split('.')
-                    etld_ = '.'.join(lbls[1:])
+                    etld_ = '.'.join(lbls[1:]).encode('idna')
                     if etld_ not in self.etlds:
                         self.etlds[etld_] = set()
                     self.etlds[etld_].add(lbls[0])
                 else:
                     # Else the normal case
-                    etld_ = line
+                    etld_ = line.encode('idna')
                     if etld_ not in self.etlds:
                         self.etlds[etld_] = set()
         return
@@ -92,6 +93,11 @@ class Dnspy:
             Returns:
                 Effective top-level domain [string]
         """
+        if type(domain) == str:
+            domain = unicode(domain, 'utf-8')
+        if type(domain) == unicode:
+            domain = domain.encode('idna')
+
         dlabels = domain.strip().split('.')
 
         etld = None
@@ -123,9 +129,14 @@ class Dnspy:
             Returns:
                 [list] of sub-domains
         """
-
         if n == 0:
             return []
+
+        if type(domain) == str:
+            domain = unicode(domain, 'utf-8')
+        if type(domain) == unicode:
+            domain = domain.encode('idna')
+
         etld = self.etld(domain)
 
         dlabels = domain[:-1*(len(etld) + 1)].split('.')
@@ -154,6 +165,12 @@ class Dnspy:
         """
         if n == 0:
             return []
+
+        if type(domain) == str:
+            domain = unicode(domain, 'utf-8')
+        if type(domain) == unicode:
+            domain = domain.encode('idna')
+
         etld = self.etld(domain)
 
         dlabels = domain[:-1*(len(etld) + 1)].split('.')
