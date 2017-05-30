@@ -1,2 +1,1 @@
 include README.md CHANGELOG
-recursive-include dnspy/data *
