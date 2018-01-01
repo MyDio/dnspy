@@ -102,4 +102,4 @@ License
 -------
 Copyright &copy; 2018 Sandeep Yadav
 
-Distributed under the MIT license
+Distributed under the Apache license

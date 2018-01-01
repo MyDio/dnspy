@@ -7,5 +7,5 @@ setup(name='dnspy',
 		author='Sandeep Yadav',
 		url='https://github.com/sandeepvaday/dnspy',
 		packages=['dnspy'],
-		license='MIT',
+		license='Apache',
 		)
