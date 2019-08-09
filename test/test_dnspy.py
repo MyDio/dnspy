@@ -1,4 +1,15 @@
 
+# Unit test execution instructions
+# $ pwd
+# ~/dnspy/
+#
+# $ python -m unittest test/test_dnspy.py
+# ......
+# ----------------------------------------------------------------------
+# Ran 6 tests in 0.301s
+#
+# OK
+
 import unittest
 
 from dnspy.dnspy import Dnspy
@@ -7,8 +18,7 @@ from dnspy.dnspy import Dnspy
 class DnspyTestCase(unittest.TestCase):
 
     def setUp(self):
-        self.dno = Dnspy('file:///tmp/mozilla_etlds.dat')
-        #self.dno = Dnspy()
+        self.dno = Dnspy()
 
     def tearDown(self):
         pass

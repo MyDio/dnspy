@@ -4,4 +4,6 @@ README.md
 setup.py
 dnspy/__init__.py
 dnspy/dnspy.py
+dnspy/data/__init__.py
+dnspy/data/mozilla_etlds.dat
 test/test_dnspy.py

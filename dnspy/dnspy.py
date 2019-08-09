@@ -27,8 +27,10 @@
 
 import sys
 import argparse
-import urllib2
+import urllib.request, urllib.error, urllib.parse
 from contextlib import closing
+from importlib.resources import open_text
+
 
 
 class InvalidDomainError (Exception):
@@ -45,44 +47,54 @@ class Dnspy:
 
     """
 
-    DEFAULT_URL = 'http://mxr.mozilla.org/mozilla-central/source/netwerk/dns/effective_tld_names.dat?raw=1'
-    etlds = dict()
-
-    def __init__(self, etld_url=DEFAULT_URL):
+    def __init__(self, update_tlds=False):
         """ Read the ETLD list provided by the user.
             Args:
-                @etld_url:    User provided URL containing effective
-                              top-level domains [string]
+                @update_tlds:   Boolean flag to allow the user to update the
+                                TLD file from Mozilla source (DEFAULT_URL)
             Returns:
         """
+        DEFAULT_URL = 'http://mxr.mozilla.org/mozilla-central/source/netwerk/dns/effective_tld_names.dat?raw=1'
+        ETLD_FILENAME = 'mozilla_etlds.dat'
 
-        with closing(urllib2.urlopen(etld_url)) as inf:
-            for line in inf:
-                # Ignore comments and whitespace lines
-                if ((line[:2] == '//') or (line[0] == '\n')):
-                    continue
+        etld_inf = open_text('dnspy.data', ETLD_FILENAME)
+        self.etlds = {}
 
-                line = unicode(line.strip(), 'utf-8')
-                line = line.strip()
+        if update_tlds:
+            etld_inf.close()
+            # Download the latest ETLD list
+            urllib.request.urlretrieve(DEFAULT_URL, etld_inf.name)
+            etld_inf = open_text('dnspy.data', ETLD_FILENAME)
+            print('File updated...')
 
-                if line[0] == '*':
-                    # Any hostname matches wildcard
-                    etld_ = line[2:].encode('idna')
-                    if etld_ not in self.etlds:
-                        self.etlds[etld_] = set()
-                    self.etlds[line[2:]].add('*')
-                elif line[0] == '!':
-                    # Exceptions to the wildcard rule
-                    lbls = line.split('.')
-                    etld_ = '.'.join(lbls[1:]).encode('idna')
-                    if etld_ not in self.etlds:
-                        self.etlds[etld_] = set()
-                    self.etlds[etld_].add(lbls[0])
-                else:
-                    # Else the normal case
-                    etld_ = line.encode('idna')
-                    if etld_ not in self.etlds:
-                        self.etlds[etld_] = set()
+        for line in etld_inf:
+
+            # Py3: line is of type 'bytes'; convert to ASCII string
+            line = line.strip()
+            # Ignore comments and whitespace lines
+            if (line.startswith('//') or line == ''):
+                continue
+
+            if line[0] == '*':
+                # Any hostname matches wildcard
+                etld_ = line[2:].encode('idna').decode()
+                if etld_ not in self.etlds:
+                    self.etlds[etld_] = set()
+                self.etlds[line[2:]].add('*')
+            elif line[0] == '!':
+                # Exceptions to the wildcard rule
+                lbls = line.split('.')
+                etld_ = '.'.join(lbls[1:]).encode('idna').decode()
+                if etld_ not in self.etlds:
+                    self.etlds[etld_] = set()
+                self.etlds[etld_].add(lbls[0])
+            else:
+                # Else the normal case
+                etld_ = line.encode('idna').decode()
+                if etld_ not in self.etlds:
+                    self.etlds[etld_] = set()
+
+        etld_inf.close()
         return
 
     def etld(self, domain):
@@ -93,11 +105,7 @@ class Dnspy:
             Returns:
                 Effective top-level domain [string]
         """
-        if type(domain) == str:
-            domain = unicode(domain, 'utf-8')
-        if type(domain) == unicode:
-            domain = domain.encode('idna')
-
+        domain = domain.encode('idna').decode()
         dlabels = domain.strip().split('.')
 
         etld = None
@@ -132,11 +140,7 @@ class Dnspy:
         if n == 0:
             return []
 
-        if type(domain) == str:
-            domain = unicode(domain, 'utf-8')
-        if type(domain) == unicode:
-            domain = domain.encode('idna')
-
+        domain = domain.encode('idna').decode()
         etld = self.etld(domain)
 
         dlabels = domain[:-1*(len(etld) + 1)].split('.')
@@ -168,11 +172,7 @@ class Dnspy:
         if n == 0:
             return []
 
-        if type(domain) == str:
-            domain = unicode(domain, 'utf-8')
-        if type(domain) == unicode:
-            domain = domain.encode('idna')
-
+        domain = domain.encode('idna').decode()
         etld = self.etld(domain)
 
         dlabels = domain[:-1*(len(etld) + 1)].split('.')
@@ -217,9 +217,9 @@ def main(argv=sys.argv):
     args = parser.parse_args()
     dpy = Dnspy()
 
-    print str(dpy.subdoms(args.qname))
-    print str(dpy.domlabels(args.qname))
-    print str(dpy.subdom_count(args.qname))
+    print(str(dpy.subdoms(args.qname)))
+    print(str(dpy.domlabels(args.qname)))
+    print(str(dpy.subdom_count(args.qname)))
 
 
 if __name__ == "__main__":
