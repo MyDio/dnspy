@@ -67,7 +67,7 @@ testetld
 Now use the custom ETLD list:
 ```python
 >>> from dnspy.dnspy import Dnspy
->>> d = Dnspy(etld_url='file:///tmp/custom_etlds.txt')
+>>> d = Dnspy()
 >>> d.subdoms('www.google.testetld')
 ['testetld', 'google.testetld', 'www.google.testetld']
 ```
