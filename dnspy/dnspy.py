@@ -120,7 +120,7 @@ class Dnspy:
             raise InvalidDomainError(domain)
 
         # Check for regex cases
-        if (('*' in self.etlds[etld]) and
+        if (i >= 1 and ('*' in self.etlds[etld]) and
                 (('!' + dlabels[i-1]) not in self.etlds[etld])):
             etld = dlabels[i-1] + '.' + etld
 

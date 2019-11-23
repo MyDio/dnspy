@@ -58,6 +58,11 @@ class DnspyTestCase(unittest.TestCase):
         result = self.dno.subdoms('foo.bar.platform.sh')
         self.assertEqual(expected, result)
 
+    def test_platform_sh_2(self):
+        expected = ['platform.sh']
+        result = self.dno.subdoms('platform.sh')
+        self.assertEqual(expected, result)
+
     def test_com(self):
         expected = ['com']
         result = self.dno.subdoms('com')
@@ -66,4 +71,9 @@ class DnspyTestCase(unittest.TestCase):
     def test_mm_1(self):
         expected = ['foo.mm']
         result = self.dno.subdoms('foo.mm')
+        self.assertEqual(expected, result)
+
+    def test_mm_2(self):
+        expected = ['mm']
+        result = self.dno.subdoms('mm')
         self.assertEqual(expected, result)
