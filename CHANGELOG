@@ -1,4 +1,8 @@
-20200111
+20200115 (v3.1)
+--------
+- Update the public suffix list (mozilla_etlds.dat)
+
+20200111 (v3.1)
 --------
 - Merge pull request which fixes bug for correctly reading wildcard tlds
 - Identify that dnspy requires py3.7+
