@@ -10,16 +10,16 @@ extracting _subdomains_ and _domain labels_ from a FQDN.
 Installation
 ------------
 
-1. To install _Dnspy_, first download the compressed tar ball _dnspy-3.0.tar.gz_
+1. To install _Dnspy_, first download the compressed tar ball _dnspy-3.1.tar.gz_
 
 2. Untar the downloaded file:
 	```
-	$ tar xvzf dnspy-3.0.tar.gz
+	$ tar xvzf dnspy-3.1.tar.gz
 	```
 
 3. Install the library
 	```
-	$ cd dnspy-3.0
+	$ cd dnspy-3.1
 	$ python setup.py install
 	```
 
@@ -95,12 +95,12 @@ Uninstall
 To uninstall, remove the package directory from the disk. On debian systems, for instance:
 
 ```
-$ rm -rf /usr/local/lib/python2.7/dist-packages/dnspy
+$ rm -rf /usr/local/lib/python3.7/dist-packages/dnspy
 ```
 
 
 License
 -------
-Copyright &copy; 2019 Sandeep Yadav
+Copyright &copy; 2020 Sandeep Yadav
 
 Distributed under the Apache license
